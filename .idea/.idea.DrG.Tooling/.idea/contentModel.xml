@@ -8,6 +8,7 @@
       <e p="DrG.Tooling.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="TcfExport.App" t="IncludeRecursive">
+        <e p="ApplicationService.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
