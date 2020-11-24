@@ -34,6 +34,12 @@ namespace TcfExport.App
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
+      if (_args.Length == 0)
+      {
+        _logger.LogInformation("no file argument supplied to program, ending...");
+        return Task.CompletedTask;
+      }
+      
       string relativeFilePath = _args[0];
 
       Console.WriteLine("current working directory -> {0}", Directory.GetCurrentDirectory());
