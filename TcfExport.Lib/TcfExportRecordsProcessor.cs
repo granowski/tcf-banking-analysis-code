@@ -33,7 +33,7 @@ namespace TcfExport.Lib
           _logger.LogWarning("found value credit value '{0}' that could not be parsed to a decimal; defaulting to 0", r.Credit);
         
         if (!successfulDebitParse)
-          _logger.LogWarning("found value credit value '{0}' that could not be parsed to a decimal; defaulting to 0", r.Debit);
+          _logger.LogWarning("found value debit value '{0}' that could not be parsed to a decimal; defaulting to 0", r.Debit);
         
         return new TcfExportData
         {

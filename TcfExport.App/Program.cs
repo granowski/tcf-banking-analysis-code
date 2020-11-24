@@ -59,6 +59,39 @@ namespace TcfExport.App
       _recordsProcessor.AddRange(records);
 
       var data = _recordsProcessor.GetDataList();
+
+      var trans = data.GetExportDataListInTimeSpan(
+        new DateTime(2020, 11, 01), 
+        new TimeSpan(5, 0, 0, 0));
+
+      trans.Sort((d1, d2) =>
+      {
+        if (d1.Date < d2.Date) return -1;
+        if (d1.Date > d2.Date) return 1;
+        return 0;
+      });
+      Console.WriteLine("first record -> {0}:{1}:{2}", trans.First().Date, trans.First().Credit, trans.First().Debit);
+      Console.WriteLine("last  record -> {0}:{1}:{2}", trans.Last().Date, trans.Last().Credit, trans.Last().Debit);
+      
+      Console.WriteLine("count of records in time span = {0}", trans.Count);
+      
+      
+      // todo -> lol, apparently I can't math... 3 days of credits: 0, 0, 2xxx from a span of 4 days should be 
+      // more like 2xxx/4 not 2xxx/3...
+      // well at least we're getting some unique list stuff going on...
+      var averageCredit = trans.GetAverageDayCredit();
+      var averageDebit = trans.GetAverageDayDebit();
+
+      
+      Console.WriteLine("average credit {0} and debit {1}", averageCredit, averageDebit);
+      
+      //
+      // foreach (TcfExportData d in trans)
+      // {
+      //   Console.WriteLine("{0};{1};{2}", d.Date, d.Credit, d.Debit);
+      // }
+      //
+      
       
       //
       // Console.WriteLine("Date:Credit:Debit");
