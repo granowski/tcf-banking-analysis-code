@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcfExport.App", "TcfExport.App\TcfExport.App.csproj", "{30751D4D-5DA6-4540-859E-8638B45E36E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcfExport.Lib", "TcfExport.Lib\TcfExport.Lib.csproj", "{7095A048-E324-4181-AEAF-F6E2AA894C5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30751D4D-5DA6-4540-859E-8638B45E36E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30751D4D-5DA6-4540-859E-8638B45E36E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30751D4D-5DA6-4540-859E-8638B45E36E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30751D4D-5DA6-4540-859E-8638B45E36E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7095A048-E324-4181-AEAF-F6E2AA894C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7095A048-E324-4181-AEAF-F6E2AA894C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7095A048-E324-4181-AEAF-F6E2AA894C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7095A048-E324-4181-AEAF-F6E2AA894C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
