@@ -17,13 +17,19 @@ namespace TcfExport.App
   public partial class ApplicationService : IHostedService {
     ILogger<ApplicationService> _logger;
     IConfiguration _configuration;
-    private string[] _args;
+    string[] _args;
+    TcfExportRecordsProcessor _recordsProcessor;
 
-    public ApplicationService(string[] args, ILogger<ApplicationService> logger, IConfiguration configuration)
+    public ApplicationService(
+        string[] args, 
+        ILogger<ApplicationService> logger, 
+        IConfiguration configuration,
+        TcfExportRecordsProcessor recordsProcessor)
     {
       _logger = logger;
       _configuration = configuration;
       _args = args;
+      _recordsProcessor = recordsProcessor;
     }
     
     public Task StartAsync(CancellationToken cancellationToken)
@@ -44,31 +50,36 @@ namespace TcfExport.App
 
       IEnumerable<TcfExportRecord> records = csvReader.GetRecords<TcfExportRecord>().ToArray();
 
-      Console.WriteLine("Date:Credit:Debit");
+      _recordsProcessor.AddRange(records);
+
+      var data = _recordsProcessor.GetDataList();
       
-      foreach (TcfExportRecord record in records)
-      {
-        Console.WriteLine("{0};{1};{2}", record.Date, record.Credit, record.Debit);
-      }
-
-      TcfExportRecords tcfData = new TcfExportRecords();
-      tcfData.AddRange(records);
-
-      decimal averageDayDebit = tcfData.GetDataList().GetAverageDayDebit();
-      decimal averageDayCredit = tcfData.GetDataList().GetAverageDayCredit();
-
-      var dataList = tcfData.GetDataList();
-
-      var eachDay = dataList.GroupBy(data => data.Date);
-      
-      foreach (IGrouping<DateTime,TcfExportData> datas in eachDay)
-      {
-        Console.WriteLine("{0} -> {1}", datas.Key, datas.Sum(d => d.Credit + d.Debit));
-      }
-        
-      
-      Console.WriteLine("Average Day Debit: {0}", averageDayDebit);
-      Console.WriteLine("Average Day Credit: {0}", averageDayCredit);
+      //
+      // Console.WriteLine("Date:Credit:Debit");
+      //
+      // foreach (TcfExportRecord record in records)
+      // {
+      //   Console.WriteLine("{0};{1};{2}", record.Date, record.Credit, record.Debit);
+      // }
+      //
+      // TcfExportRecords tcfData = new TcfExportRecords();
+      // tcfData.AddRange(records);
+      //
+      // decimal averageDayDebit = tcfData.GetDataList().GetAverageDayDebit();
+      // decimal averageDayCredit = tcfData.GetDataList().GetAverageDayCredit();
+      //
+      // var dataList = tcfData.GetDataList();
+      //
+      // var eachDay = dataList.GroupBy(data => data.Date);
+      //
+      // foreach (IGrouping<DateTime,TcfExportData> datas in eachDay)
+      // {
+      //   Console.WriteLine("{0} -> {1}", datas.Key, datas.Sum(d => d.Credit + d.Debit));
+      // }
+      //
+      // Console.WriteLine("Average Day Debit: {0}", averageDayDebit);
+      // Console.WriteLine("Average Day Credit: {0}", averageDayCredit);
+      //
       
       
       return Task.CompletedTask;
@@ -86,10 +97,16 @@ namespace TcfExport.App
     {
       var host = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
       {
+        services.AddLogging();
+        
+        // simple clean uninitialized class should be fine for now...
+        services.AddSingleton<TcfExportRecordsProcessor>();
+        
         services.AddHostedService(serviceProvider => new ApplicationService(
           args,
           serviceProvider.GetService<ILogger<ApplicationService>>(),
-          serviceProvider.GetService<IConfiguration>()));
+          serviceProvider.GetService<IConfiguration>(),
+          serviceProvider.GetService<TcfExportRecordsProcessor>()));
       });
 
       host.Build().Run();
